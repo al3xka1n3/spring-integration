@@ -2,5 +2,6 @@ rootProject.name = "spring-integration"
 
 include("spring-integration-main")
 include("spring-rest-api")
-include 'spring-integration-java-dsl'
+include("spring-integration-java-dsl")
+include("spring-integration-kafka")
 
