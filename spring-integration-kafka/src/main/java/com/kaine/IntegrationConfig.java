@@ -4,12 +4,14 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.kafka.dsl.Kafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.messaging.MessageChannel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,11 +41,18 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public IntegrationFlow producer(KafkaTemplate<String, Object> kafkaTemplate) {
+    public MessageChannel kafkaChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public IntegrationFlow producer(KafkaTemplate<String, Object> kafkaTemplate, MessageChannel kafkaChannel) {
         System.out.println("________Starting producer flow________");
 
         return f -> f
-                .channel("kafkaChannel.output")
-                .handle(Kafka.outboundChannelAdapter(kafkaTemplate).topic("spring-integration-kafka-topic"));
+                .channel(kafkaChannel)
+                .handle(Kafka
+                        .outboundChannelAdapter(kafkaTemplate)
+                        .topic("spring-integration-kafka-topic"));
     }
 }
