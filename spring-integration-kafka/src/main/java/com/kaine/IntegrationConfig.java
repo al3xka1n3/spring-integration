@@ -21,8 +21,8 @@ import java.util.Map;
 public class IntegrationConfig {
 
     @Bean
-    public Map<String, Object> producerConfigs() {
-        Map<String, Object> props = new HashMap<>();
+    public Map<String,Object> producerConfigs() {
+        Map<String,Object> props = new HashMap<>();
         props.put("bootstrap.servers", "localhost:9092");
         props.put("client.id", "client-id-1");
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -31,12 +31,12 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public ProducerFactory<String, Object> producerFactory() {
+    public ProducerFactory<String,Object> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, Object> kafkaTemplate() {
+    public KafkaTemplate<String,Object> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 
@@ -46,7 +46,7 @@ public class IntegrationConfig {
     }
 
     @Bean
-    public IntegrationFlow producer(KafkaTemplate<String, Object> kafkaTemplate, MessageChannel kafkaChannel) {
+    public IntegrationFlow producer(KafkaTemplate<String,Object> kafkaTemplate, MessageChannel kafkaChannel) {
         System.out.println("________Starting producer flow________");
 
         return f -> f
