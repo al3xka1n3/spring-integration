@@ -22,7 +22,7 @@ public class OutboundKafkaTest {
     public void testCase() {
         System.out.println("________Sending message from test________");
         Message<String> message = MessageBuilder
-                .withPayload("testing message payload")
+                .withPayload("Test message payload!!!")
                 .build();
 
         kafkaChannel.send(message);
